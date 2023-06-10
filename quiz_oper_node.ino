@@ -10,6 +10,7 @@
 //Your Domain name with URL path or IP address with path
 //String reqUrl = "http://192.168.35.96:9090/?sig=1";
 String reqUrl = "http://192.168.100.101:9090/?sig=";
+String teamNum = "3";
 
 // the following variables are unsigned longs because the time, measured in
 // milliseconds, will quickly become a bigger number than can be stored in an int.
@@ -18,6 +19,8 @@ unsigned long lastTime = 0;
 //unsigned long timerDelay = 600000;
 // Set timer to 5 seconds (5000)
 unsigned long timerDelay = 100;
+
+int push_flag = 0;
 
 void setup()
 {
@@ -110,14 +113,26 @@ void loop() {
     sig = "4";
   }*/
   if(var1 == HIGH){
-    sig = "1";
+    sig = teamNum;
+    if(push_flag == 0){
+      push_flag = 1;  
+    }
+    
+  }else{
+    push_flag = 0;
   }
   
 
   if(sig != ""){
-    digitalWrite(D0, HIGH);  // Turn the LED off by making the voltage HIGH
-    sendSig(sig);
+    if(push_flag == 1){
+      digitalWrite(D0, HIGH);  // Turn the LED off by making the voltage HIGH
+      sendSig(sig);
+      push_flag = 2;
+    }
   }else{
     digitalWrite(D0, LOW);  // Turn the LED off by making the voltage HIGH
   } 
+
+
+  delay(10);
 }
